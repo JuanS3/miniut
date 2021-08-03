@@ -3,7 +3,7 @@ import platform
 import os
 import colorama
 
-import config as cfg
+from miniut import config as cfg
 
 
 _COLORS_LIST = [RED     := 'RED',

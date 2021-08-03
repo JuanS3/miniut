@@ -1,7 +1,7 @@
 from typing import List, Dict, Tuple
 
-import config as cfg
-import console
+from miniut import config as cfg
+from miniut import console
 
 
 # key: id, group of report
