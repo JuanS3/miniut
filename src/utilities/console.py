@@ -3,6 +3,8 @@ import platform
 import os
 import colorama
 
+import config as cfg
+
 
 _COLORS_LIST = [RED     := 'RED',
                 GREEN   := 'GREEN',
@@ -25,18 +27,32 @@ __lvl = ''
 __LVL_SIZE = 2
 __init = False
 
+
+_START_LANGS = {cfg.ENG : 'START',
+                cfg.ESP : 'INICIA',
+                }
+
+_END_LANGS = {cfg.ENG : 'END',
+              cfg.ESP : 'TERMINA',
+              }
+
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 # ~~                         decorators                         ~~ #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-def block(message_block: str):
+def block(message_block: str or dict, color: str = BLUE):
     def decorator(func):
         @functools.wraps(func)
         def wrapped():
-            start_block(message_block)
+            message = message_block
+            if isinstance(message_block, dict):
+                message = message_block[cfg.lang()]
+
+            start_block(message, color)
             new_line()
             func()
             new_line()
-            end_block(message_block)
+            end_block(message, color)
         return wrapped
     return decorator
 
@@ -91,14 +107,14 @@ def __send_msg(message,
     print(f'{msg_col}{message}', end=endl)
 
 
-def start_block(message):
-    __send_msg(f'{colorama.Style.BRIGHT}{__COLORS[BLUE]}INICIA {message.upper()}')
+def start_block(message: str, color: str = BLUE):
+    __send_msg(f'{colorama.Style.BRIGHT}{__COLORS[color]}{_START_LANGS[cfg.lang()]} {message.upper()}')
     add_lvl()
 
 
-def end_block(message):
+def end_block(message: str, color: str = BLUE):
     del_lvl()
-    __send_msg(f'{colorama.Style.BRIGHT}{__COLORS[BLUE]}TERMINA {message.upper()}')
+    __send_msg(f'{colorama.Style.BRIGHT}{__COLORS[color]}{_END_LANGS[cfg.lang()]} {message.upper()}')
     new_line()
 
 
