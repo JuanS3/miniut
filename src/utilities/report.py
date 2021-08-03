@@ -20,9 +20,9 @@ def add_id(id: str):
         __max_id_len = max(__max_id_len, len(id))
 
 
-def add_message_by_id(id: str, title: str, mensaje: str = ''):
+def add_message_by_id(id: str, title: str, message: str = ''):
     add_id(id)
-    __report[id].append((title, mensaje))
+    __report[id].append((title, message))
     
     global __report_titles
     if id not in __report_titles:
