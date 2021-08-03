@@ -53,7 +53,7 @@ def print_general_report():
         n_errors = num_errors_by_id(id)
         color = console.RED if n_errors > 0 else console.GREEN
         tab = '.' * (__max_id_len - len(id))
-        console.write(f'Total de < {id} > con error {tab} : {n_errors}', color=color)
+        console.println(f'Total de < {id} > con error {tab} : {n_errors}', color=color)
 
 
 @console.block(message_block='Informe detallado')

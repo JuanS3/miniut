@@ -102,11 +102,11 @@ def end_block(message):
     new_line()
 
 
-def write(message: str,
-          endl='\n',
-          withlvl=True,
-          color: str = ''
-          ):
+def println(message: str,
+            endl='\n',
+            withlvl=True,
+            color: str = ''
+            ):
     __send_msg(message, endl=endl, withlvl=withlvl, color=color)
 
 
