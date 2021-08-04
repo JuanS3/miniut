@@ -20,5 +20,5 @@ def ttime(func):
         start_time = dt.now()
         value = func(*args, **kwargs)
         final_time = dt.now() - start_time
-        return value, final_time.total_seconds()
+        return  final_time.total_seconds(), value
     return wrapper
