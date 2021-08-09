@@ -1,4 +1,4 @@
-from miniut.abstract.database import DBAbs
+from miniut.abstract import DBAbs
 import unittest
 
 
