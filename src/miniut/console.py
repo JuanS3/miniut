@@ -43,16 +43,17 @@ _END_LANGS = {cfg.ENG : 'END',
 def block(message_block: str or dict, color: str = BLUE):
     def decorator(func):
         @functools.wraps(func)
-        def wrapped():
+        def wrapped(*args, **kwargs):
             message = message_block
             if isinstance(message_block, dict):
                 message = message_block[cfg.lang()]
 
             start_block(message, color)
             new_line()
-            func()
+            value = func(*args, **kwargs)
             new_line()
             end_block(message, color)
+            return value
         return wrapped
     return decorator
 
