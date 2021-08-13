@@ -2,7 +2,6 @@ import os
 import logging
 import functools
 from datetime import datetime as dt
-import re
 
 from miniut.exceptions import RestoreLog
 from miniut import config as cfg
