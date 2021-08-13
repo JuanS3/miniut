@@ -10,7 +10,7 @@ from miniut import config as cfg
 FOLDER_LOGS_DEFAULT = 'Logs'
 
 _folder_logs = FOLDER_LOGS_DEFAULT
-_log_name = 'logging.log'
+_log_name = ''
 _log: logging.Logger = None
 _log_ok: bool = True
 _log_aux: str = ''
@@ -58,7 +58,7 @@ def block(message_block: str or dict):
 # ~~                          functions                         ~~ #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-def init(log_name: str,
+def init(log_name: str = 'logging',
          folder_log: str = FOLDER_LOGS_DEFAULT,
          time: bool = True
          ) -> None:
@@ -77,8 +77,8 @@ def init(log_name: str,
     """
     global _log_name, _folder_logs, _log
     time_log: str = dt.now().strftime('%Y%m%d-%H%M%S') if time else ''
-    _log_name: str = f'{log_name} - {time_log}.log'
-    _folder_logs: str = folder_log
+    _log_name = f'{log_name} - {time_log}.log'
+    _folder_logs = folder_log
 
     if not os.path.exists(_folder_logs):
         os.makedirs(_folder_logs)
