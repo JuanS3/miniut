@@ -9,15 +9,15 @@ from miniut import config as cfg
 
 FOLDER_LOGS_DEFAULT: str = 'Logs'
 
-_folder_logs: str    = FOLDER_LOGS_DEFAULT
-_log: logging.Logger = None
-_log_name: str = 'logging.log'
-_log_ok: bool  = True
-_log_aux: str  = ''
+__folder_logs: str    = FOLDER_LOGS_DEFAULT
+__log: logging.Logger = None
+__log_name: str = 'logging.log'
+__log_ok: bool  = True
+__log_aux: str  = ''
 
-_lvl: str = ''
-_STANDARD_LVL: str = ' '
-_LVL_INDENT: int = 2
+__lvl: str = ''
+__STANDARD_LVL: str = ' '
+__LVL_INDENT: int = 2
 
 
 _START_LANGS = {cfg.ENG : 'START',
@@ -75,55 +75,55 @@ def init(log_name: str = 'logging',
         True in case the logging file name has the time with format '%Y%m%d-%H%M%S'
         False in case the time in the name is not necessary, by default True
     """
-    global _log_name, _folder_logs, _log, _lvl
+    global __log_name, __folder_logs, __log, __lvl
 
-    _lvl = ''
+    __lvl = ''
 
     log_time: str = dt.now().strftime('%Y%m%d-%H%M%S') if time else ''
-    _log_name = f'{log_name} - {log_time}.log'
-    _folder_logs = folder_log
+    __log_name = f'{log_name} - {log_time}.log'
+    __folder_logs = folder_log
 
-    if not os.path.exists(_folder_logs):
-        os.makedirs(_folder_logs)
+    if not os.path.exists(__folder_logs):
+        os.makedirs(__folder_logs)
 
     format = logging.Formatter('%(asctime)-8s - %(levelname)-8s - %(message)s')
-    heandler = logging.FileHandler(f'{_folder_logs}/{_log_name}', encoding='UTF-8')
+    heandler = logging.FileHandler(f'{__folder_logs}/{__log_name}', encoding='UTF-8')
     heandler.setFormatter(format)
-    _log = logging.getLogger(_log_name)
-    _log.setLevel(logging.DEBUG)
-    _log.addHandler(heandler)
+    __log = logging.getLogger(__log_name)
+    __log.setLevel(logging.DEBUG)
+    __log.addHandler(heandler)
 
 
 def get_folder_log() -> str:
-    return _folder_logs
+    return __folder_logs
 
 
 def get_log_name() -> str:
-    return _log_name
+    return __log_name
 
 
 def _add_lvl() -> None:
     """
     Add one level (indentation)
     """
-    global _lvl
-    _lvl += (_STANDARD_LVL * _LVL_INDENT)
+    global __lvl
+    __lvl += (__STANDARD_LVL * __LVL_INDENT)
 
 
 def _sub_lvl() -> None:
     """
     Substract one level (indentation)
     """
-    global _lvl
-    _lvl = _lvl[:-_LVL_INDENT]
+    global __lvl
+    __lvl = __lvl[:-__LVL_INDENT]
 
 
 def _bad_log() -> None:
     """
     Indicate the log has an error and should be restored
-    """    
-    global _log_ok
-    _log_ok = False
+    """
+    global __log_ok
+    __log_ok = False
 
 
 def start_block(message: str) -> None:
@@ -163,9 +163,9 @@ def _message_log_aux(type_message: str, msg: str) -> None:
     msg : str
         The message to display in the log
     """
-    global _log_aux
+    global __log_aux
     log_time = dt.now().strftime('%Y-%m-%d %H:%M:%S')
-    _log_aux += f'{log_time} - {type_message:<10} - {msg}\n'
+    __log_aux += f'{log_time} - {type_message:<10} - {msg}\n'
 
 
 def info(message: str) -> None:
@@ -177,9 +177,9 @@ def info(message: str) -> None:
     message : str
         The message to display in the log
     """
-    msg = f'{_lvl}{message}'
+    msg = f'{__lvl}{message}'
     try:
-        _log.info(msg)
+        __log.info(msg)
     except:
         _bad_log()
     finally:
@@ -195,9 +195,9 @@ def warning(message: str) -> None:
     message : str
         The message to display in the log
     """
-    msg = f'{_lvl}{message}'
+    msg = f'{__lvl}{message}'
     try:
-        _log.warning(msg)
+        __log.warning(msg)
     except:
         _bad_log()
     finally:
@@ -213,9 +213,9 @@ def critical(message: str) -> None:
     message : str
         The message to display in the log
     """
-    msg = f'{_lvl}{message}'
+    msg = f'{__lvl}{message}'
     try:
-        _log.critical(msg)
+        __log.critical(msg)
     except:
         _bad_log()
     finally:
@@ -231,9 +231,9 @@ def error(message: str) -> None:
     message : str
         The message to display in the log
     """
-    msg = f'{_lvl}>>> {message} <<<'
+    msg = f'{__lvl}>>> {message} <<<'
     try:
-        _log.error(msg)
+        __log.error(msg)
     except:
        _bad_log()
     finally:
@@ -248,21 +248,21 @@ def _restore_log() -> None:
     ------
     RestoreLog
         In case the log file cannot be restored
-    """    
-    log_file_name = f'{_log_name[:-4]} - {_RESTORED_LOG_LANGS[cfg.lang()]}.log'
+    """
+    log_file_name = f'{__log_name[:-4]} - {_RESTORED_LOG_LANGS[cfg.lang()]}.log'
 
     try:
-        with open(f'{_folder_logs}/{log_file_name}', 'w', encoding='UTF-8') as f:
-            f.write(_log_aux)
+        with open(f'{__folder_logs}/{log_file_name}', 'w', encoding='UTF-8') as f:
+            f.write(__log_aux)
     except Exception as e:
         raise RestoreLog(message=_RESTORE_EXCEPT_LANGS[cfg.lang()],
-                            error=str(e)  
+                            error=str(e)
                             )
 
 
 def close() -> None:
     """
     If the log file had any problem to write then try to restore it.
-    """    
-    if not _log_ok:
+    """
+    if not __log_ok:
         _restore_log()
