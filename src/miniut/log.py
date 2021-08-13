@@ -11,7 +11,7 @@ FOLDER_LOGS_DEFAULT: str = 'Logs'
 
 _folder_logs: str    = FOLDER_LOGS_DEFAULT
 _log: logging.Logger = None
-_log_name: str = ''
+_log_name: str = 'logging.log'
 _log_ok: bool  = True
 _log_aux: str  = ''
 
