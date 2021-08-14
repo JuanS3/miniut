@@ -123,7 +123,7 @@ def __send_msg(message: str,
 
     Parameters
     ----------
-    message : [type]
+    message : str
         Message to print to console
     endl : str, optional
         The end of line, by default `\\n`
