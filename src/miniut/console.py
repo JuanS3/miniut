@@ -375,7 +375,9 @@ def __print_matrix_box_style(matrix,
                               max_len_value = max_len_value
                               )
 
-    println(f'{indentation}{spaces}{div}', color=color_style, withlvl=False) # printing the bar div
+    bar_div = lambda: println(f'{indentation}{spaces}{div}', color=color_style, withlvl=False)
+
+    bar_div()
 
     for row in matrix:
         println(indentation, endl='', withlvl=False)
@@ -394,7 +396,7 @@ def __print_matrix_box_style(matrix,
             new_line()
 
     if style == 'box':
-        println(f'{indentation}{spaces}{div}', color=color_style, withlvl=False) # printing the bar div
+        bar_div()
     else:
         new_line()
 
