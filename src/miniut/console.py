@@ -301,7 +301,11 @@ def __print_matrix_row(row: list,
                        color: str,
                        nan_format: str,
                        color_style: str,
-                       end_line: str
+                       color_index: str,
+                       end_line: str,
+                       start_line: str,
+                       index_name: str,
+                       indentation: str
                        ) -> None:
     """
     Printed the row of the matrix.
@@ -326,9 +330,26 @@ def __print_matrix_row(row: list,
         the color must be one of the `COLORS_LIST`
         ['RED', 'GREEN', ...], `console.COLORS_LIST` for all colors available
 
+    color_index : str
+        The color of the index, the color must be one of the `COLORS_LIST`
+        ['RED', 'GREEN', ...], `console.COLORS_LIST` for all colors available
+
     end_line : str
         The end of line to be printed
+
+    start_line : str
+        The beginning of line to be printed
+
+    index_name : str
+        The name of the index to be printed
+
+    indentation : str
+        The indentation of the line
     """
+    println(indentation, endl='', withlvl=False)
+    println(index_name,  endl='', color=color_index, withlvl=False)
+    println(start_line,  endl='', color=color_style, withlvl=False)
+
     for cell in row:
         cellstr = str(cell) if str(cell) not in ('None', 'nan', 'NaN', '') else nan_format
         println(f' {cellstr : ^{max_len_value}} ', color=color, endl='', withlvl=False)
@@ -400,7 +421,6 @@ def __print_matrix_box_style(matrix,
         True if the matrix should be printed with the current indentation False in otherwise
     """
 
-    index_row_id = 0
     div: str = '-' * (len(matrix[0]) * max_len_value) + '-' * (len(matrix[0]) * 2)
     spaces: str = ' ' * (len_index + 3)
     indentation: str = __indentation_lvl if withlvl else ''
@@ -418,19 +438,17 @@ def __print_matrix_box_style(matrix,
 
     bar_div()
 
-    for row in matrix:
-        println(indentation, endl='', withlvl=False)
-        if indexes is not None:
-            println(f'{indexes[index_row_id]: >{len_index}}', endl='', color=color_index, withlvl=False)
-        println(' | ', endl='', color=color_style, withlvl=False)
-        index_row_id += 1
-
+    for index_row_id, row in enumerate(matrix):
         __print_matrix_row(row = row,
                            max_len_value = max_len_value,
                            color = color,
                            nan_format = nan_format,
                            color_style = color_style,
-                           end_line = ' | ' if style == 'box' else ''
+                           color_index = color_index,
+                           end_line = ' | ' if style == 'box' else '',
+                           start_line = ' | ',
+                           index_name = f'{indexes[index_row_id]: >{len_index}}' if indexes is not None else '',
+                           indentation = indentation
                            )
 
     bar_div() if style == 'box' else new_line()
@@ -496,7 +514,6 @@ def __print_matrix_numpy_style(matrix,
     withlvl : bool, optional
         True if the matrix should be printed with the current indentation False in otherwise
     """
-    index_row_id = 0
     indentation: str = __indentation_lvl if withlvl else ''
 
     if header is not None:
@@ -510,32 +527,24 @@ def __print_matrix_numpy_style(matrix,
 
     max_rows: int = len(matrix)
 
-    for row in matrix:
+    for index_row_id, row in enumerate(matrix):
         # string line
         if index_row_id == 0:
             println(indentation, '[ ', endl='', color=color_style, withlvl=False)
         else:
             println('  ', indentation, endl='', withlvl=False)
 
-        # index line value
-        if indexes is not None:
-            println(f'{indexes[index_row_id]: >{len_index}}', endl='', color=color_index, withlvl=False)
-        println(' [ ', endl='', color=color_style, withlvl=False)
-        index_row_id += 1
-
-        # Ending line
-        end_line: str = ' ]'
-        if max_rows == index_row_id:
-            end_line += '  ]'
-
         __print_matrix_row(row = row,
                            max_len_value = max_len_value,
                            color = color,
                            nan_format = nan_format,
                            color_style = color_style,
-                           end_line = end_line
+                           color_index = color_index,
+                           end_line = ' ]' if max_rows != index_row_id + 1 else ' ]  ]',
+                           start_line = ' [ ',
+                           index_name = f'{indexes[index_row_id]: >{len_index}}' if indexes is not None else '',
+                           indentation = indentation
                            )
-        # println(end_line, color=color_style, withlvl=False)
 
 
 def __print_matrix_without_style(matrix,
