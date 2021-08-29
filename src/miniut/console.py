@@ -250,7 +250,7 @@ def __max_len_value(matrix, nan_format) -> int:
     for row in matrix:
         if isinstance(row, list):
             for col in row:
-                max_len =max_value(col)
+                max_len = max_value(col)
         else:
             max_len = max_value(row)
     return max_len
@@ -294,6 +294,19 @@ def __print_matrix_header(header: List[str],
     for h in header:
         println(f' {h : ^{max_len_value}} ', color=color_index, endl='', withlvl=False)
     new_line()
+
+
+def __print_matrix_row(row: list,
+                       max_len_value: int,
+                       color: str,
+                       nan_format: str,
+                       color_style: str,
+                       end_line: str
+                       ) -> None:
+    for cell in row:
+        cellstr = str(cell) if str(cell) not in ('None', 'nan', 'NaN', '') else nan_format
+        println(f' {cellstr : ^{max_len_value}} ', color=color, endl='', withlvl=False)
+    println(end_line, color=color_style, withlvl=False)
 
 
 def __print_matrix_box_style(matrix,
@@ -386,19 +399,16 @@ def __print_matrix_box_style(matrix,
         println(' | ', endl='', color=color_style, withlvl=False)
         index_row_id += 1
 
-        for cell in row:
-            cellstr = str(cell) if str(cell) not in ('None', 'nan', 'NaN', '') else nan_format
-            println(f' {cellstr : ^{max_len_value}} ', color=color, endl='', withlvl=False)
+        __print_matrix_row(row = row,
+                           max_len_value = max_len_value,
+                           color = color,
+                           nan_format = nan_format,
+                           color_style = color_style,
+                           end_line = ' | ' if style == 'box' else ''
+                           )
 
-        if style == 'box':
-            println(' | ', color=color_style, withlvl=False)
-        else:
-            new_line()
+    bar_div() if style == 'box' else new_line()
 
-    if style == 'box':
-        bar_div()
-    else:
-        new_line()
 
 
 def __print_matrix_numpy_style(matrix,
@@ -461,7 +471,6 @@ def __print_matrix_numpy_style(matrix,
         True if the matrix should be printed with the current indentation False in otherwise
     """
     index_row_id = 0
-    spaces: str = ' ' * (len_index + 3)
     indentation: str = __indentation_lvl if withlvl else ''
 
     if header is not None:
@@ -489,15 +498,23 @@ def __print_matrix_numpy_style(matrix,
         index_row_id += 1
 
         # Line values
-        for cell in row:
-            cellstr = str(cell) if str(cell) not in ('None', 'nan', 'NaN', '') else nan_format
-            println(f' {cellstr : ^{max_len_value}} ', color=color, endl='', withlvl=False)
+        # for cell in row:
+        #     cellstr = str(cell) if str(cell) not in ('None', 'nan', 'NaN', '') else nan_format
+        #     println(f' {cellstr : ^{max_len_value}} ', color=color, endl='', withlvl=False)
 
         # Ending line
         end_line: str = ' ]'
         if max_rows == index_row_id:
             end_line += '  ]'
-        println(end_line, color=color_style, withlvl=False)
+
+        __print_matrix_row(row = row,
+                           max_len_value = max_len_value,
+                           color = color,
+                           nan_format = nan_format,
+                           color_style = color_style,
+                           end_line = end_line
+                           )
+        # println(end_line, color=color_style, withlvl=False)
 
 
 def __print_matrix_without_style(matrix,
