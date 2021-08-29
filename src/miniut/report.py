@@ -37,7 +37,7 @@ def add_id(id: str):
 def add_message_by_id(id: str, title: str, message: str = ''):
     add_id(id)
     _report[id].append((title, message))
-    
+
     global _report_titles
     if id not in _report_titles:
         _report_titles[id] = 0
