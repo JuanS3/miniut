@@ -303,6 +303,32 @@ def __print_matrix_row(row: list,
                        color_style: str,
                        end_line: str
                        ) -> None:
+    """
+    Printed the row of the matrix.
+
+    Parameters
+    ----------
+    row : list
+        The row of the matrix to be printed
+
+    max_len_value : int
+        Longest value size in the matrix
+
+    color : str
+        The color of the matrix items, the color must be one of the `COLORS_LIST`
+        ['RED', 'GREEN', ...], `console.COLORS_LIST` for all colors available
+
+    nan_format : str
+        The formatted string to print a NaN/None value
+
+    color_style : str
+        The color style to print the matrix, for example the grid lines,
+        the color must be one of the `COLORS_LIST`
+        ['RED', 'GREEN', ...], `console.COLORS_LIST` for all colors available
+
+    end_line : str
+        The end of line to be printed
+    """
     for cell in row:
         cellstr = str(cell) if str(cell) not in ('None', 'nan', 'NaN', '') else nan_format
         println(f' {cellstr : ^{max_len_value}} ', color=color, endl='', withlvl=False)
@@ -496,11 +522,6 @@ def __print_matrix_numpy_style(matrix,
             println(f'{indexes[index_row_id]: >{len_index}}', endl='', color=color_index, withlvl=False)
         println(' [ ', endl='', color=color_style, withlvl=False)
         index_row_id += 1
-
-        # Line values
-        # for cell in row:
-        #     cellstr = str(cell) if str(cell) not in ('None', 'nan', 'NaN', '') else nan_format
-        #     println(f' {cellstr : ^{max_len_value}} ', color=color, endl='', withlvl=False)
 
         # Ending line
         end_line: str = ' ]'
