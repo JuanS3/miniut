@@ -256,6 +256,46 @@ def __max_len_value(matrix, nan_format) -> int:
     return max_len
 
 
+def __print_matrix_header(header: List[str],
+                          len_index: int,
+                          color_index: str,
+                          extra_spacing: str,
+                          withlvl: bool,
+                          max_len_value: int
+                          ) -> None:
+    """
+    Print the header of the matrix
+
+    Parameters
+    ----------
+    header : List[str]
+        If the matrix has a header to print with them, by default None
+
+    len_index : int
+        Longest value size index of the indexes
+
+    color_index : str
+        The color of the index, the color must be one of the `COLORS_LIST`
+        ['RED', 'GREEN', ...], `console.COLORS_LIST` for all colors available
+
+    extra_spacing : str
+        The extra spacing befote printing the header
+
+    withlvl : bool
+        True if the matrix should be printed with the current indentation False in otherwise
+
+    max_len_value : int
+        Longest value size in the matrix
+    """
+    spaces: str = ' ' * (len_index + 3)
+    indentation: str = __indentation_lvl if withlvl else ''
+
+    println(f'{indentation}{spaces}{extra_spacing}', endl='', withlvl=False)
+    for h in header:
+        println(f' {h : ^{max_len_value}} ', color=color_index, endl='', withlvl=False)
+    new_line()
+
+
 def __print_matrix_box_style(matrix,
                              header: List[str],
                              indexes: Union[List[str], str],
@@ -327,10 +367,13 @@ def __print_matrix_box_style(matrix,
     indentation: str = __indentation_lvl if withlvl else ''
 
     if header is not None:
-        println(f'{indentation}{spaces}', endl='', withlvl=False)
-        for h in header:
-            println(f' {h : ^{max_len_value}} ', color=color_index, endl='', withlvl=False)
-        new_line()
+        __print_matrix_header(header = header,
+                              len_index = len_index,
+                              color_index = color_index,
+                              extra_spacing = '',
+                              withlvl = withlvl,
+                              max_len_value = max_len_value
+                              )
 
     println(f'{indentation}{spaces}{div}', color=color_style, withlvl=False) # printing the bar div
 
@@ -418,11 +461,15 @@ def __print_matrix_numpy_style(matrix,
     index_row_id = 0
     spaces: str = ' ' * (len_index + 3)
     indentation: str = __indentation_lvl if withlvl else ''
+
     if header is not None:
-        println(f'{indentation}{spaces}   ', endl='', color=color_style, withlvl=False)
-        for h in header:
-            println(f' {h : ^{max_len_value}} ', color=color_index, endl='', withlvl=False)
-        new_line()
+        __print_matrix_header(header = header,
+                              len_index = len_index,
+                              color_index = color_index,
+                              extra_spacing = '   ',
+                              withlvl = withlvl,
+                              max_len_value = max_len_value
+                              )
 
     max_rows: int = len(matrix)
 
