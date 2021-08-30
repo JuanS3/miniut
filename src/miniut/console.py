@@ -637,7 +637,7 @@ def __print_matrix_without_style(matrix,
 
 
 def print_matrix(matrix,
-                 header: List[str] = None,
+                 header: Union[List[str], str] = 'all',
                  indexes: Union[List[str], str] = 'all',
                  style: str = 'box',
                  nan_format: str = '',
@@ -674,15 +674,14 @@ def print_matrix(matrix,
     matrix : Iterable object
         An iterable object to print
 
-    header : List[str], optional
-        If the matrix has a header to print with them, by default None
+    header : List[str] | str, optional
+        A list of strings if is a presonalized column name
+        - `all` to show the index of the column,
+        - `None` do not show any index, by default `all`
 
     indexes : List[str] | str, optional
-        A list of strings if is a presonalized index name,
-        - `all` to show number index for row and columns, only show the index for columns if the
-        header are empty (`None`)
-        - `row` to show the index of the row,
-        - `col` to show the index of the column
+        A list of strings if is a presonalized index name
+        - `all` to show the index of the row,
         - `None` do not show any index, by default `all`
 
     style : str, optional
@@ -714,17 +713,12 @@ def print_matrix(matrix,
     withlvl : bool, optional
         True if the matrix should be printed with the current indentation False in otherwise
     """
-    indexes_condition = indexes
+    if indexes == 'all':
+        indexes = [str(i) for i in range(len(matrix))]
 
-    if isinstance(indexes_condition, str):
-        if indexes_condition in ('all', 'row'):
-            indexes = [str(i) for i in range(len(matrix))]
+    if header == 'all':
+        header = [str(i) for i in range(len(matrix[0]))]
 
-        if indexes_condition in ('all', 'col') and header == None:
-            header = [str(i) for i in range(len(matrix[0]))]
-
-        if isinstance(indexes, str):
-            indexes = None
 
     max_len_value = __max_len_value(matrix, nan_format)
     max_len_value = max(max_len_value, __max_len_value([] if header is None else header, nan_format))
