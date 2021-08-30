@@ -261,7 +261,8 @@ def __print_matrix_header(header: List[str],
                           color_index: str,
                           extra_spacing: str,
                           withlvl: bool,
-                          max_len_value: int
+                          max_len_value: int,
+                          lvl_space: int = 3
                           ) -> None:
     """
     Print the header of the matrix
@@ -286,8 +287,11 @@ def __print_matrix_header(header: List[str],
 
     max_len_value : int
         Longest value size in the matrix
+
+    lvl_space : int
+        Number of aditional spaces based on the style
     """
-    spaces: str = ' ' * (len_index + 3)
+    spaces: str = ' ' * (len_index + lvl_space)
     indentation: str = __indentation_lvl if withlvl else ''
 
     println(f'{indentation}{spaces}{extra_spacing}', endl='', withlvl=False)
@@ -420,7 +424,6 @@ def __print_matrix_box_style(matrix,
     withlvl : bool, optional
         True if the matrix should be printed with the current indentation False in otherwise
     """
-
     div: str = '-' * (len(matrix[0]) * max_len_value) + '-' * (len(matrix[0]) * 2)
     spaces: str = ' ' * (len_index + 3)
     indentation: str = __indentation_lvl if withlvl else ''
@@ -548,16 +551,89 @@ def __print_matrix_numpy_style(matrix,
 
 
 def __print_matrix_without_style(matrix,
-                                 header: List[str] = None,
-                                 indexes: Union[List[str], str] = 'all',
-                                 style: str = 'box',
-                                 nan_format: str = '',
-                                 color: str = None,
-                                 color_index: str = '',
-                                 color_style: str = '',
-                                 withlvl: bool = True
+                                 header: List[str],
+                                 indexes: Union[List[str], str],
+                                 style: str,
+                                 nan_format: str,
+                                 color: str,
+                                 color_index: str,
+                                 color_style: str,
+                                 max_len_value: int,
+                                 len_index: int,
+                                 withlvl: bool
                                  ) -> None:
-    pass
+    """
+    The matrix has been printed in a box or semibox style.
+
+    Parameters
+    ----------
+    matrix : Iterable object
+        An iterable object to print
+
+    header : List[str], optional
+        If the matrix has a header to print with them, by default None
+
+    indexes : List[str] | str, optional
+        A list of strings if is a presonalized index name,
+        - `all` to show number index for row and columns, only show the index for columns if the
+        header are empty (`None`)
+        - `row` to show the index of the row,
+        - `col` to show the index of the column
+        - `None` do not show any index, by default `all`
+
+    nan_format : str, optional
+        The formatted string to print a NaN/None value, by default ''
+
+    color : str, optional
+        The color of the matrix items, the color must be one of the `COLORS_LIST`
+        ['RED', 'GREEN', ...], `console.COLORS_LIST` for all colors available;
+        by default has no color
+
+    color_index : str, optional
+        The color of the index, the color must be one of the `COLORS_LIST`
+        ['RED', 'GREEN', ...], `console.COLORS_LIST` for all colors available;
+        by default has no color
+
+    color_style : str, optional
+        The color style to print the matrix, for example the grid lines,
+        the color must be one of the `COLORS_LIST`
+        ['RED', 'GREEN', ...], `console.COLORS_LIST` for all colors available;
+        by default has no color
+
+    max_len_value : int
+        Longest value of the array
+
+    len_index : int
+        Longest index of the array
+
+    withlvl : bool, optional
+        True if the matrix should be printed with the current indentation False in otherwise
+    """
+    indentation: str = __indentation_lvl if withlvl else ''
+
+    if header is not None:
+        __print_matrix_header(header = header,
+                              len_index = len_index,
+                              color_index = color_index,
+                              extra_spacing = '',
+                              withlvl = withlvl,
+                              max_len_value = max_len_value,
+                              lvl_space = 0
+                              )
+
+    for index_row_id, row in enumerate(matrix):
+        __print_matrix_row(row = row,
+                           max_len_value = max_len_value,
+                           color = color,
+                           nan_format = nan_format,
+                           color_style = color_style,
+                           color_index = color_index,
+                           end_line = '',
+                           start_line = '',
+                           index_name = f'{indexes[index_row_id]: >{len_index}}' if indexes is not None else '',
+                           indentation = indentation
+                           )
+
 
 
 def print_matrix(matrix,
