@@ -688,8 +688,8 @@ def print_matrix(matrix,
         The style to print the matrix, by default `box`
         - `box` Borders around the matrix
         - `semibox` Borders at the top and left of the matrix
-        - `None` Without borders, only show the values
         - `numpy` or `np` Has been printed like a NumPy matrix
+        - `None` Without borders, only show the values
 
     nan_format : str, optional
         The formatted string to print a NaN/None value, by default ''
