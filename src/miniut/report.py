@@ -28,7 +28,7 @@ __BLOCK_LANG_DETAIL = {cfg.ENG : 'Detail report',
 
 
 def add_id(id: str):
-    global __informe, __max_id_len
+    global __max_id_len
     if id not in __report:
         __report[id] = []
         __max_id_len = max(__max_id_len, len(id))
