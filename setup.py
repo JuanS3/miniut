@@ -10,7 +10,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 def get_version(prop):
     result = re.search(r'{}\s*=\s*[\'"]([^\'"]*)[\'"]'.format(prop), open( 'src/miniut/__init__.py').read())
-    return result
+    return result.group(1)
 
 setup(
     name='miniut',
