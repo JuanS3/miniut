@@ -49,11 +49,11 @@ def block(message_block: Union[str, dict], color: str = BLUE):
             if isinstance(message_block, dict):
                 message = message_block[cfg.lang()]
 
-            start_block(message, color)
+            start_block(message, color=color)
             new_line()
             value = func(*args, **kwargs)
             new_line()
-            end_block(message, color)
+            end_block(message, color=color)
             return value
         return wrapped
     return decorator
@@ -169,7 +169,7 @@ def start_block(*message: tuple, color: str = BLUE) -> None:
         The color of the title block, by default BLUE
     """
     message = __to_string(*message)
-    println(f'{colorama.Style.BRIGHT}{__COLORS[color]}{__START_LANGS[cfg.lang()]} {message.upper()}')
+    println(f'{__START_LANGS[cfg.lang()]} {message.upper()}', color=color)
     add_lvl()
 
 
@@ -187,7 +187,7 @@ def end_block(*message: tuple, color: str = BLUE) -> None:
     """
     message = __to_string(*message)
     del_lvl()
-    println(f'{colorama.Style.BRIGHT}{__COLORS[color]}{__END_LANGS[cfg.lang()]} {message.upper()}')
+    println(f'{__END_LANGS[cfg.lang()]} {message.upper()}', color=color)
     new_line()
 
 
@@ -201,7 +201,7 @@ def warning(*message: tuple) -> None:
         The message to display in the log
     """
     message = __to_string(*message)
-    println(f'{colorama.Style.BRIGHT}{__COLORS[YELLOW]}warning: {message}')
+    println(f'warning: {message}', color=YELLOW)
 
 
 def error(*message: tuple) -> None:
@@ -214,7 +214,7 @@ def error(*message: tuple) -> None:
         The message to display in the log
     """
     message = __to_string(*message)
-    println(f'{colorama.Style.BRIGHT}{__COLORS[RED]}error: >>> {message} <<<')
+    println(f'error: >>> {message} <<<', color=RED)
 
 
 def new_line():
