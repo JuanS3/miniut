@@ -7,21 +7,16 @@ import colorama
 from miniut import config as cfg
 
 
-COLORS_LIST = [RED     := 'RED',
-               GREEN   := 'GREEN',
-               YELLOW  := 'YELLOW',
-               BLUE    := 'BLUE',
-               MAGENTA := 'MAGENTA',
-               CYAN    := 'CYAN',
-               ]
+__COLORS = {
+    (RED     := 'RED')     : colorama.Fore.RED,
+    (GREEN   := 'GREEN')   : colorama.Fore.GREEN,
+    (YELLOW  := 'YELLOW')  : colorama.Fore.YELLOW,
+    (BLUE    := 'BLUE')    : colorama.Fore.BLUE,
+    (MAGENTA := 'MAGENTA') : colorama.Fore.MAGENTA,
+    (CYAN    := 'CYAN')    : colorama.Fore.CYAN,
+}
 
-__COLORS = {RED     : colorama.Fore.RED,
-            GREEN   : colorama.Fore.GREEN,
-            YELLOW  : colorama.Fore.YELLOW,
-            BLUE    : colorama.Fore.BLUE,
-            MAGENTA : colorama.Fore.MAGENTA,
-            CYAN    : colorama.Fore.CYAN
-            }
+COLORS_LIST = list(__COLORS.keys())
 
 __indentation_type  : str = ' '
 __indentation_lvl   : str = ''
@@ -29,13 +24,15 @@ __indentantion_size : int = 2
 __is_init : bool = False
 
 
-__START_LANGS = {cfg.ENG : 'START',
-                 cfg.ESP : 'INICIA',
-                 }
+__START_LANGS = {
+    cfg.ENG : 'START',
+    cfg.ESP : 'INICIA',
+}
 
-__END_LANGS = {cfg.ENG : 'END',
-               cfg.ESP : 'TERMINA',
-               }
+__END_LANGS = {
+    cfg.ENG : 'END',
+    cfg.ESP : 'TERMINA',
+}
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
