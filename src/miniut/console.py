@@ -18,6 +18,17 @@ __COLORS = {
 
 COLORS_LIST = list(__COLORS.keys())
 
+__ICONS = {
+    (WARNING := 'warning') : '⚠',
+    (ERROR   := 'error')   : '❌',
+    (SUCCESS := 'success') : '✅',
+    (INFO := 'info')    : '💡',
+    (QUESTION := 'question') : '❓',
+    (ANSWER := 'answer') : '💬',
+}
+
+ICONS_LIST = list(__ICONS.keys())
+
 __indentation_type  : str = ' '
 __indentation_lvl   : str = ''
 __indentantion_size : int = 2
