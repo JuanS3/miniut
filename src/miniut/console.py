@@ -243,8 +243,10 @@ def print_icon_list() -> None:
     Print the list of icons available in the console
     """
     println('Icons available:')
+    add_lvl()
     for e in ICONS_LIST:
         println(f'{e} : {icon(e)}')
+    del_lvl()
 
 
 def print_color_list() -> None:
@@ -252,15 +254,19 @@ def print_color_list() -> None:
     Print the list of colors available in the console
     """
     println('Colors available:')
+    add_lvl()
     for e in COLORS_LIST:
         println(f'{e} : ', endl='')
         println('Miniut', color=e)
+    del_lvl()
     new_line()
 
     print('Background colors available:')
+    add_lvl()
     for e in BACKGROUNDS_LIST:
         println(f'{e} : ', endl='')
         println('Miniut', bg_color=e)
+    del_lvl()
 
 
 def __max_len_value(matrix, nan_format) -> int:
