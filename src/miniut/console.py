@@ -132,6 +132,9 @@ def println(*message: tuple,
         The color of the message, the color must be one of the `COLORS_LIST`
         ['RED', 'GREEN', ...], `console.COLORS_LIST` for all colors available;
         by default has no color
+
+    bg_color : str, optional
+        The background color of the message, the color must be one of the `BACKGROUNS_LIST`
     """
     __init()
     message = __to_string(*message)
