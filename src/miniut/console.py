@@ -2,38 +2,16 @@ from typing import List, Union
 import functools
 import platform
 import os
-import colorama
 
 from miniut import config as cfg
+from miniut.term import *
 
-
-__COLORS = {
-    (RED     := 'RED')     : colorama.Fore.RED,
-    (GREEN   := 'GREEN')   : colorama.Fore.GREEN,
-    (YELLOW  := 'YELLOW')  : colorama.Fore.YELLOW,
-    (BLUE    := 'BLUE')    : colorama.Fore.BLUE,
-    (MAGENTA := 'MAGENTA') : colorama.Fore.MAGENTA,
-    (CYAN    := 'CYAN')    : colorama.Fore.CYAN,
-}
-
-COLORS_LIST = list(__COLORS.keys())
-
-__ICONS = {
-    (WARNING := 'warning') : '⚠',
-    (ERROR   := 'error')   : '❌',
-    (SUCCESS := 'success') : '✅',
-    (INFO := 'info')    : '💡',
-    (QUESTION := 'question') : '❓',
-    (ANSWER := 'answer') : '💬',
-}
-
-ICONS_LIST = list(__ICONS.keys())
 
 __indentation_type  : str = ' '
 __indentation_lvl   : str = ''
 __indentantion_size : int = 2
 __is_init : bool = False
-
+__autoreset_colors: bool = True
 
 __START_LANGS = {
     cfg.ENG : 'START',
@@ -79,7 +57,11 @@ def __init():
         init(False)
 
 
-def init(clear: bool = True, indentation_type: str = ' ', indentation_size: int = 2):
+def init(clear: bool = True,
+         indentation_type: str = ' ',
+         indentation_size: int = 2,
+         autoreset_colors: bool = True
+         ) -> None:
     """
     Initialize the console, and resert the indentation level
 
@@ -88,12 +70,12 @@ def init(clear: bool = True, indentation_type: str = ' ', indentation_size: int 
     clear : bool, optional
         True to clear the screen and False is not, by default True
     """
-    global __is_init, __indentation_lvl, __indentantion_size, __indentation_type
+    global __is_init, __indentation_lvl, __indentantion_size, __indentation_type, __autoreset_colors
     __indentation_lvl = ''
     __indentantion_size = indentation_size
     __indentation_type  = indentation_type
+    __autoreset_colors  = autoreset_colors
 
-    colorama.init(autoreset=True)
     if clear:
         clear_screen()
     __is_init = True
@@ -125,7 +107,9 @@ def del_lvl():
 def println(*message: tuple,
             endl: str = '\n',
             withlvl: bool = True,
-            color: str = ''
+            color: str = '',
+            bg_color: str = '',
+            reset_all_colors: bool = True
             ) -> None:
     """
     Print the message to the console, the `endl` is the same as `end` in print function
@@ -152,12 +136,16 @@ def println(*message: tuple,
     __init()
     message = __to_string(*message)
 
-    if withlvl: message = __indentation_lvl + message
+    if withlvl:
+        message = __indentation_lvl + message
 
-    if color in COLORS_LIST: msg_col = f'{colorama.Style.BRIGHT}{__COLORS[color]}'
-    else: msg_col = ''
+    if color in COLORS_LIST:
+        msg_col = f'{get_color(color=color)}{get_background(bg_color=bg_color)}' if color in COLORS_LIST else ''
+    else:
+        msg_col = ''
 
-    print(f'{msg_col}{message}', end=endl)
+    reset_console_colors: str = reset_colors() if reset_all_colors or __autoreset_colors else ''
+    print(f'{msg_col}{message}{reset_console_colors}', end=endl)
 
 
 def __to_string(*values: tuple, sep: str = ' ') -> str:
@@ -232,7 +220,7 @@ def new_line():
     println('', withlvl=False)
 
 
-def line(size: int = 30) -> None:
+def line(size: int = 30, style: str = '-- ') -> None:
     """
     Display a line in the console like this `-- -- -- -- -- -- --`
     whit the indicated size
@@ -242,7 +230,7 @@ def line(size: int = 30) -> None:
     size : int, optional
         The size of the line to display, by display 30
     """
-    println(f'{("-- " * size)[:-1]}')
+    println(f'{(style * size)[:-1]}')
     new_line()
 
 
