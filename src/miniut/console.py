@@ -139,10 +139,11 @@ def println(*message: tuple,
     if withlvl:
         message = __indentation_lvl + message
 
+    msg_col = ''
     if color in COLORS_LIST:
-        msg_col = f'{get_color(color=color)}{get_background(bg_color=bg_color)}' if color in COLORS_LIST else ''
-    else:
-        msg_col = ''
+        msg_col += f'{get_color(color=color)}'
+    if bg_color in BACKGROUNDS_LIST:
+        msg_col += f'{get_background(bg_color=bg_color)}'
 
     reset_console_colors: str = reset_colors() if reset_all_colors or __autoreset_colors else ''
     print(f'{msg_col}{message}{reset_console_colors}', end=endl)
