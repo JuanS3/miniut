@@ -34,9 +34,9 @@ def resert() -> None:
     Reset the configuration of the report module
     """
     global __report, __max_id_len, __report_titles
-    __report: Dict[str, List[Tuple[str, str]]] = {}
-    __report_titles: Dict[str, int] = {}
-    __max_id_len: int = 0
+    __report = {}
+    __report_titles = {}
+    __max_id_len = 0
 
 
 def init() -> None:
