@@ -238,6 +238,31 @@ def line(size: int = 30, style: str = '-- ') -> None:
     new_line()
 
 
+def print_icon_list() -> None:
+    """
+    Print the list of icons available in the console
+    """
+    println('Icons available:')
+    for e in ICONS_LIST:
+        println(f'{e} : {icon(e)}')
+
+
+def print_color_list() -> None:
+    """
+    Print the list of colors available in the console
+    """
+    println('Colors available:')
+    for e in COLORS_LIST:
+        println(f'{e} : ', endl='')
+        println('Miniut', color=e)
+    new_line()
+
+    print('Background colors available:')
+    for e in BACKGROUNDS_LIST:
+        println(f'{e} : ', endl='')
+        println('Miniut', bg_color=e)
+
+
 def __max_len_value(matrix, nan_format) -> int:
 
     def max_value(cell) -> int:
