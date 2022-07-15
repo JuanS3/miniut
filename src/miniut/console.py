@@ -230,7 +230,10 @@ def line(size: int = 30, style: str = '-- ') -> None:
     size : int, optional
         The size of the line to display, by display 30
     """
-    println(f'{(style * size)[:-1]}')
+    line: str = style * size
+    if line[:-1] == ' ':
+        line = line[:-1]
+    println(line)
     new_line()
 
 
