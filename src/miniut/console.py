@@ -248,7 +248,7 @@ def print_icon_list() -> None:
     println('Icons available:')
     add_lvl()
     for e in ICONS_LIST:
-        println(f'{e} : {icon(e)}')
+        println(f'{icon(e):2} : {e}')
     del_lvl()
 
 
@@ -259,16 +259,16 @@ def print_color_list() -> None:
     println('Colors available:')
     add_lvl()
     for e in COLORS_LIST:
-        println(f'{e} : ', endl='')
-        println('Miniut', color=e)
+        println(f'{e:7} : ', endl='')
+        println('Miniut', color=e, withlvl=False)
     del_lvl()
     new_line()
 
     print('Background colors available:')
     add_lvl()
     for e in BACKGROUNDS_LIST:
-        println(f'{e} : ', endl='')
-        println('Miniut', bg_color=e)
+        println(f'{e:10} : ', endl='')
+        println('Miniut', bg_color=e, withlvl=False)
     del_lvl()
 
 
