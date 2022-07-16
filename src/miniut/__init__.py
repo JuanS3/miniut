@@ -14,3 +14,7 @@ from miniut.config import (
     all_langs,
     lang
 )
+
+from miniut.term.emojis import (
+    emoji
+)
