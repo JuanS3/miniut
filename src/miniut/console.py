@@ -241,14 +241,14 @@ def line(size: int = 30, style: str = '-- ') -> None:
     new_line()
 
 
-def print_icon_list() -> None:
+def print_emoji_list() -> None:
     """
-    Print the list of icons available in the console
+    Print the list of emojis available
     """
-    println('Icons available:')
+    println('Emojis available:')
     add_lvl()
-    for e in ICONS_LIST:
-        println(f'{icon(e):2} : {e}')
+    for e in EMOJIS_LIST:
+        println(f'{emoji(e):2} : {e}')
     del_lvl()
 
 

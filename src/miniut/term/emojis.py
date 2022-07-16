@@ -194,7 +194,7 @@ PEOPLE = {
     (GREEN_HEART := 'green_heart') : '💚'
 }
 
-ALL_ICONS = {
+ALL_EMOJIS = {
 
     **COUNTRIES,
     **ARROWS,
@@ -219,10 +219,10 @@ ALL_ICONS = {
     (TRIANGLE_DOWN := 'triangle_down') : '▼',
 }
 
-ICONS_LIST = list(ALL_ICONS.keys())
+EMOJIS_LIST = list(ALL_EMOJIS.keys())
 
 
-def icon(icon: str) -> str:
+def emoji(icon: str) -> str:
     """
     Return the icon of the given name
 
@@ -231,4 +231,4 @@ def icon(icon: str) -> str:
     icon : str
         The name of the icon to return
     """
-    return ALL_ICONS[icon] if icon in ICONS_LIST else ''
+    return ALL_EMOJIS[icon] if icon in EMOJIS_LIST else ''
