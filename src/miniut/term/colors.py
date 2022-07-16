@@ -48,6 +48,17 @@ __BACKGROUNDS = {
 
 BACKGROUNDS_LIST = list(__BACKGROUNDS.keys())
 
+__STYLES = {
+    (BOLD      := 'BOLD')      : '\033[1m',
+    (UNDERLINE := 'UNDERLINE') : '\033[4m',
+    (BLINK     := 'BLINK')     : '\033[5m',
+    (INVERT    := 'INVERT')    : '\033[7m',
+    (HIDDEN    := 'HIDDEN')    : '\033[8m',
+}
+
+STYLES_LIST = list(__STYLES.keys())
+
+
 def get_color(color: str = '') -> str:
     color = color.upper()
     return __COLORS[color] if color in __COLORS else ''
@@ -57,6 +68,10 @@ def get_background(bg_color: str) -> str:
     if 'BG_' not in bg_color:
         bg_color = 'BG_' + bg_color
     return __BACKGROUNDS[bg_color] if bg_color in __BACKGROUNDS else ''
+
+def get_style(style: str) -> str:
+    style = style.upper()
+    return __STYLES[style] if style in __STYLES else ''
 
 def reset_colors() -> str:
     return _END_COLOR

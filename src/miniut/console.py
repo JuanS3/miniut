@@ -109,7 +109,8 @@ def println(*message: tuple,
             withlvl: bool = True,
             color: str = '',
             bg_color: str = '',
-            reset_all_colors: bool = True
+            reset_all_colors: bool = True,
+            style : str = ''
             ) -> None:
     """
     Print the message to the console, the `endl` is the same as `end` in print function
@@ -147,6 +148,8 @@ def println(*message: tuple,
         msg_col += f'{get_color(color=color)}'
     if bg_color in BACKGROUNDS_LIST:
         msg_col += f'{get_background(bg_color=bg_color)}'
+    if style in STYLES_LIST:
+        msg_col += f'{get_style(style=style)}'
 
     reset_console_colors: str = reset_colors() if reset_all_colors or __autoreset_colors else ''
     print(f'{msg_col}{message}{reset_console_colors}', end=endl)
@@ -269,6 +272,17 @@ def print_color_list() -> None:
     for e in BACKGROUNDS_LIST:
         println(f'{e:10} : ', endl='')
         println('Miniut', bg_color=e, withlvl=False)
+    del_lvl()
+
+def print_style_list() -> None:
+    """
+    Print the list of styles available in the console
+    """
+    println('Styles available:')
+    add_lvl()
+    for e in STYLES_LIST:
+        println(f'{e:10} : ', endl='')
+        println('Miniut', style=e, withlvl=False)
     del_lvl()
 
 
