@@ -177,7 +177,7 @@ def println(*message: Any,
     msg_col = ''
     if color in COLORS_LIST:
         msg_col += f'{get_color(color=color)}'
-    if bg_color in BACKGROUNDS_LIST:
+    if bg_color in BACKGROUNDS_LIST + COLORS_LIST:
         msg_col += f'{get_background(bg_color=bg_color)}'
     if style in STYLES_LIST:
         msg_col += f'{get_style(style=style)}'
