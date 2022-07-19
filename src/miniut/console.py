@@ -308,7 +308,7 @@ def line(size: int = 30,
          style: str = '-- ',
          color: str = '',
          bg_color: str = '',
-         style: str = ''
+         style_text: str = ''
          ) -> None:
     """
     Display a line in the console like this `-- -- -- -- -- -- --`
@@ -319,19 +319,22 @@ def line(size: int = 30,
     size : int, optional
         The size of the line to display, by display 30
 
+    style : str, optional
+        The style of the line, by default is '-- '
+
     color : str, optional
         The color of the line, by default has no color
 
     bg_color : str, optional
         The background color of the line, by default has no color
 
-    style : str, optional
+    style_text : str, optional
         The style of the line, by default has no style
     """
     line: str = style * size
     if line[:-1] == ' ':
         line = line[:-1]
-    println(line, color=color, bg_color=bg_color, style=style)
+    println(line, color=color, bg_color=bg_color, style=style_text)
     new_line()
 
 
