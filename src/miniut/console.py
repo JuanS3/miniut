@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import Any, List, Union
 import functools
 import platform
 import os
@@ -27,7 +27,27 @@ __END_LANGS = {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 # ~~                         decorators                         ~~ #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-def block(message_block: Union[str, dict], color: str = BLUE):
+def block(message_block: Union[str, dict],
+          color: str = BLUE,
+          bg_color: str = ''
+          ) -> callable:
+    """
+    Decorator to create a block of text.
+
+    Parameters
+    ----------
+    message_block : Union[str, dict]
+        if is a str, then is the title of the block, if is a dict, then is the
+        title is taken according to the language selected in the config file,
+        e.g. {'en': 'Title', 'es': 'Título'} the title is printed is Title if the
+        language is `en`, and Título if the language is `es`.
+
+    color : str, optional
+        The color of the message, by default BLUE
+
+    bg_color : str, optional
+        The background color of the message, by default has no color
+    """
     def decorator(func):
         @functools.wraps(func)
         def wrapped(*args, **kwargs):
@@ -35,11 +55,11 @@ def block(message_block: Union[str, dict], color: str = BLUE):
             if isinstance(message_block, dict):
                 message = message_block[cfg.lang()]
 
-            start_block(message, color=color)
+            start_block(message, color=color, bg_color=bg_color)
             new_line()
             value = func(*args, **kwargs)
             new_line()
-            end_block(message, color=color)
+            end_block(message, color=color, bg_color=bg_color)
             return value
         return wrapped
     return decorator
@@ -104,13 +124,14 @@ def del_lvl():
     __indentation_lvl = __indentation_lvl[:-__indentantion_size]
 
 
-def println(*message: tuple,
+def println(*message: Any,
             endl: str = '\n',
             withlvl: bool = True,
             color: str = '',
             bg_color: str = '',
             reset_all_colors: bool = True,
-            style : str = ''
+            style: str = '',
+            sep: str = ' '
             ) -> None:
     """
     Print the message to the console, the `endl` is the same as `end` in print function
@@ -119,7 +140,7 @@ def println(*message: tuple,
 
     Parameters
     ----------
-    message : tuple
+    message : Any
         Message to print to console
 
     endl : str, optional
@@ -136,9 +157,19 @@ def println(*message: tuple,
 
     bg_color : str, optional
         The background color of the message, the color must be one of the `BACKGROUNS_LIST`
+
+    reset_all_colors : bool, optional
+        True to reset all colors, False is not necessary, by default `True`
+
+    style : str, optional
+        The style of the message, the style must be one of the `STYLES_LIST`,
+        by default has no style
+
+    sep : str, optional
+        The separator between the values, by default is a space
     """
     __init()
-    message = __to_string(*message)
+    message = __to_string(*message, sep=sep)
 
     if withlvl:
         message = __indentation_lvl + message
@@ -155,69 +186,115 @@ def println(*message: tuple,
     print(f'{msg_col}{message}{reset_console_colors}', end=endl)
 
 
-def __to_string(*values: tuple, sep: str = ' ') -> str:
+def __to_string(*values: Any, sep: str = ' ') -> str:
     return sep.join([str(m) for m in values])
 
 
-def start_block(*message: tuple, color: str = BLUE) -> None:
+def start_block(*message: Any, color: str = BLUE, bg_color: str = '') -> None:
     """
     Start a block of messages
 
     Parameters
     ----------
-    message : tuple
+    message : Any
         The title of the block
 
     color : str, optional
         The color of the title block, by default BLUE
+
+    bg_color : str, optional
+        The background color of the title block, by default has no color
     """
     message = __to_string(*message)
-    println(f'{__START_LANGS[cfg.lang()]} {message.upper()}', color=color)
+    println(f'{__START_LANGS[cfg.lang()]} {message.upper()}',
+            color=color,
+            bg_color=bg_color
+            )
     add_lvl()
 
 
-def end_block(*message: tuple, color: str = BLUE) -> None:
+def end_block(*message: Any,
+              color: str = BLUE,
+              bg_color: str = '',
+              style: str = ''
+              ) -> None:
     """
     End a block of messages
 
     Parameters
     ----------
-    message : tuple
+    message : Any
         The title of the block
 
     color : str, optional
         The color of the title block, by default BLUE
+
+    bg_color : str, optional
+        The background color of the title block, by default has no color
+
+    style : str, optional
+        The style of the title block, by default has no style
     """
     message = __to_string(*message)
     del_lvl()
-    println(f'{__END_LANGS[cfg.lang()]} {message.upper()}', color=color)
+    println(f'{__END_LANGS[cfg.lang()]} {message.upper()}',
+            color=color,
+            bg_color=bg_color,
+            style=style
+            )
     new_line()
 
 
-def warning(*message: tuple) -> None:
+def warning(*message: Any,
+            color: str = BLUE,
+            bg_color: str = '',
+            style: str = ''
+            ) -> None:
     """
     Warning message starts with 'warning: {message}'
 
     Parameters
     ----------
-    message : tuple
+    message : Any
         The message to display in the log
+
+    color : str, optional
+        The color of the message, by default YELLOW
+
+    bg_color : str, optional
+        The background color of the message, by default has no color
+
+    style : str, optional
+        The style of the message, by default has no style
     """
     message = __to_string(*message)
-    println(f'warning: {message}', color=YELLOW)
+    println(f'warning: {message}', color=color, bg_color=bg_color, style=style)
 
 
-def error(*message: tuple) -> None:
+def error(*message: Any,
+          color: str = RED,
+          bg_color: str = '',
+          style: str = ''
+          ) -> None:
     """
     Error message is displayed like `error: >>> {message} <<<`
 
     Parameters
     ----------
-    message : tuple
+    message : Any
         The message to display in the log
+
+    color : str, optional
+        The color of the message, by default RED
+
+    bg_color : str, optional
+        The background color of the message, by default has no color
+
+    style : str, optional
+        The style of the message, by default has no style
     """
     message = __to_string(*message)
-    println(f'error: >>> {message} <<<', color=RED)
+    println(f'error: >>> {message} <<<', color=color, bg_color=bg_color, style=style)
 
 
 def new_line():
@@ -227,7 +304,12 @@ def new_line():
     println('', withlvl=False)
 
 
-def line(size: int = 30, style: str = '-- ') -> None:
+def line(size: int = 30,
+         style: str = '-- ',
+         color: str = '',
+         bg_color: str = '',
+         style: str = ''
+         ) -> None:
     """
     Display a line in the console like this `-- -- -- -- -- -- --`
     whit the indicated size
@@ -236,11 +318,20 @@ def line(size: int = 30, style: str = '-- ') -> None:
     ----------
     size : int, optional
         The size of the line to display, by display 30
+
+    color : str, optional
+        The color of the line, by default has no color
+
+    bg_color : str, optional
+        The background color of the line, by default has no color
+
+    style : str, optional
+        The style of the line, by default has no style
     """
     line: str = style * size
     if line[:-1] == ' ':
         line = line[:-1]
-    println(line)
+    println(line, color=color, bg_color=bg_color, style=style)
     new_line()
 
 
