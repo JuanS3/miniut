@@ -157,6 +157,7 @@ def println(*message: Any,
 
     bg_color : str, optional
         The background color of the message, the color must be one of the `BACKGROUNS_LIST`
+        or `COLORS_LIST` for all colors available; by default has no color
 
     reset_all_colors : bool, optional
         True to reset all colors, False is not necessary, by default `True`
