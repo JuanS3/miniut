@@ -124,6 +124,51 @@ def del_lvl():
     __indentation_lvl = __indentation_lvl[:-__indentantion_size]
 
 
+def _colorize(text: str,
+              color: str,
+              bg_color: str,
+              style: str,
+              reset_console_colors: bool,
+              ) -> str:
+    """
+    Colorize the text
+
+    Parameters
+    ----------
+    text : str
+        The text to colorize
+
+    color : str
+        The color of the text, the color must be one of the `COLORS_LIST`
+        ['RED', 'GREEN', ...], `console.COLORS_LIST` for all colors available;
+        by default has no color
+
+    bg_color : str
+        The background color of the text, the color must be one of the `BACKGROUNS_LIST`
+        or `COLORS_LIST` for all colors available; by default has no color
+
+    style : str
+        The style of the text, the style must be one of the `STYLES_LIST`,
+        by default has no style
+
+    reset_console_colors : bool
+        True to reset all colors, False is not necessary, by default `True`
+
+    Returns
+    -------
+    str
+        The colorized text
+    """
+    colorized_text = get_color(color) + \
+                     get_background(bg_color) + \
+                     get_style(style) + \
+                     text
+    if reset_console_colors:
+        colorized_text += reset_colors()
+
+    return colorized_text
+
+
 def println(*message: Any,
             endl: str = '\n',
             withlvl: bool = True,
@@ -175,16 +220,14 @@ def println(*message: Any,
     if withlvl:
         message = __indentation_lvl + message
 
-    msg_col = ''
-    if color in COLORS_LIST:
-        msg_col += f'{get_color(color=color)}'
-    if bg_color in BACKGROUNDS_LIST + COLORS_LIST:
-        msg_col += f'{get_background(bg_color=bg_color)}'
-    if style in STYLES_LIST:
-        msg_col += f'{get_style(style=style)}'
-
     reset_console_colors: str = reset_colors() if reset_all_colors or __autoreset_colors else ''
-    print(f'{msg_col}{message}{reset_console_colors}', end=endl)
+    colorized_text: str = _colorize(text=message,
+                                    color=color,
+                                    bg_color=bg_color,
+                                    style=style,
+                                    reset_console_colors=reset_console_colors
+                                    )
+    print(colorized_text, end=endl)
 
 
 def __to_string(*values: Any, sep: str = ' ') -> str:
