@@ -1,4 +1,4 @@
-__version__ =  '0.1.0'
+__version__ =  '0.2.0'
 
 from miniut.decorators import (
     singleton,
@@ -13,4 +13,8 @@ from miniut.config import (
     define_lang,
     all_langs,
     lang
+)
+
+from miniut.term.emojis import (
+    emoji
 )
